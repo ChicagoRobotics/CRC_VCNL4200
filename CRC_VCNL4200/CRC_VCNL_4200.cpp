@@ -13,12 +13,16 @@
 
 #include "CRC_VCNL_4200.h"
 
+CRC_VCNL4200::CRC_VCNL4200() { }
+
+
 boolean CRC_VCNL4200::begin(uint8_t addr) {
 	_i2caddr = addr;
 	Wire.begin();
 
 	uint8_t rev = read8(VCNL4200_PRODUCTID);
-	//Serial.println(rev, HEX);
+	Serial.print("ProductID: ");
+	Serial.println(rev, HEX);
 	if ((rev & 0xF0) != 0x20) {
 		return false;
 	}

@@ -5,21 +5,34 @@
 */
 
 #include "CRC_VCNL_4200.h"
+
+CRC_VCNL4200 v4200;
 int ledPin = 13;
 int sdaPin = 20;
 
-// the setup function runs once when you press reset or power the board
 void setup() {
+	Serial.begin(9600);
+	Serial.println("Booting VCNL 4200 test");
 	pinMode(ledPin, OUTPUT);
 	pinMode(sdaPin, OUTPUT);
+
+	if (!v4200.begin()) {
+		Serial.println("Sensor not found :(");
+		while (1);
+	}
+	Serial.println("Found VCNL 4200");
 }
 
-// the loop function runs over and over again until power down or reset
 void loop() {
-	digitalWrite(ledPin, HIGH);   // sets the LED on
+	Serial.print("Ambient: "); 
+	Serial.println(v4200.readAmbient());
+	Serial.print("Proximity: "); 
+	Serial.println(v4200.readProximity());
+	digitalWrite(ledPin, HIGH);
 	digitalWrite(sdaPin, HIGH);
 	delay(2000);                  // waits for a second
 	digitalWrite(ledPin, LOW);    // sets the LED off
 	digitalWrite(sdaPin, LOW);
 	delay(2000);
 }
+
