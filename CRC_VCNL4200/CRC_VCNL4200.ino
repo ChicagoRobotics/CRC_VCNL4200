@@ -4,6 +4,7 @@
  Author:	jlaing
 */
 
+#include "CRC_VCNL_4200.h"
 int ledPin = 13;
 int sdaPin = 20;
 
