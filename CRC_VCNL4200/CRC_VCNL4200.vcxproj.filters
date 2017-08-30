@@ -17,5 +17,9 @@
   <ItemGroup>
     <None Include="CRC_VCNL4200.ino" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClInclude Include="__vm\.CRC_VCNL4200.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
