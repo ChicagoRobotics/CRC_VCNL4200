@@ -20,9 +20,11 @@ boolean CRC_VCNL4200::begin(uint8_t addr) {
 	_i2caddr = addr;
 	Wire.begin();
 
-	uint8_t rev = read8(VCNL4200_PRODUCTID);
+	//uint8_t rev = read8(VCNL4200_PRODUCTID);
+	uint16_t rev = read16(VCNL4200_PRODUCTID);
 	Serial.print("ProductID: ");
-	Serial.println(rev, HEX);
+	//Serial.println(rev, HEX);
+	Serial.println(rev);
 	if ((rev & 0xF0) != 0x20) {
 		return false;
 	}
@@ -120,9 +122,13 @@ uint16_t CRC_VCNL4200::read16(uint8_t address)
 	Wire.endTransmission();
 
 	Wire.requestFrom(_i2caddr, (uint8_t)2);
+	Serial.print(_i2caddr);
+	Serial.println("request sent");
 	while (!Wire.available());
 #if ARDUINO >= 100
 	data = Wire.read();
+	Serial.print("data: ");
+	Serial.println(data);
 	data <<= 8;
 	while (!Wire.available());
 	data |= Wire.read();
