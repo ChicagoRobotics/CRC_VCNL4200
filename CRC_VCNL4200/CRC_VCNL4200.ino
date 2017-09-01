@@ -24,7 +24,7 @@ void loop() {
 	Serial.println(F("Scanning..."));
 
 	nDevices = 0;
-	for (address = 1; address < 127; address++) {
+	for (address = 0; address < 127; address++) {
 		// The i2c_scanner uses the return value of
 		// the Write.endTransmisstion to see if
 		// a device did acknowledge to the address.
