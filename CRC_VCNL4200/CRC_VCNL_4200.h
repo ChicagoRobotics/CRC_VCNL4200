@@ -10,20 +10,10 @@
 	#include <Wire.h>
 #endif
 
-#define VCNL4200_I2CADDR_DEFAULT 0x51
+#define VCNL4200_I2CADDR 0x51
 
 // commands and constants
-#define VCNL4200_COMMAND 0x80
-#define VCNL4200_PRODUCTID 0x0E
-#define VCNL4200_PROXRATE 0x82
-#define VCNL4200_IRLED 0x83
-#define VCNL4200_AMBIENTPARAMETER 0x84
-#define VCNL4200_AMBIENTDATA 0x85
-#define VCNL4200_PROXIMITYDATA 0x87
-#define VCNL4200_INTCONTROL 0x89
-#define VCNL4200_PROXINITYADJUST 0x8A
-#define VCNL4200_INTSTAT 0x8E
-#define VCNL4200_MODTIMING 0x8F
+#define VCNL4200_DeviceID 0x0E
 
 typedef enum
 {
@@ -41,7 +31,7 @@ typedef enum
 class CRC_VCNL4200 {
 public:
 	CRC_VCNL4200(); // existing
-	boolean begin(uint8_t a = VCNL4200_I2CADDR_DEFAULT); // existing
+	boolean begin();
 	uint8_t getLEDcurrent(void); // existing
 	void setLEDcurrent(uint8_t c); // existing
 	void setFrequency(VCNL4200_freq f); // existing
