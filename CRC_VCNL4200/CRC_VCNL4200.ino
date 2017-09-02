@@ -54,7 +54,7 @@ void loop() {
 	//Serial.print("Proximity: ");
 	//Serial.println(value);
 
-	//int reg2 = 0x9; //Proximity Sensor (PS) output
+	//int reg2 = 0x9; //Ambient Light Sensor (ALS) output
 	//Wire.beginTransmission(SENSOR_ADDR);
 	//Wire.write(reg2);
 	//Wire.endTransmission(false);
