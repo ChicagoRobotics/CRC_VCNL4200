@@ -1,15 +1,13 @@
 // CRC_VCNL_4200.h
 
 #ifndef _CRC_VCNL_4200_h
-#define _CRC_VCNL_4200_h
-
+	#define _CRC_VCNL_4200_h
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
 #else
 	#include "WProgram.h"
 #endif
 	#include <Wire.h>
-
 #endif
 
 #define VCNL4200_I2CADDR_DEFAULT 0x51
@@ -42,17 +40,17 @@ typedef enum
 
 class CRC_VCNL4200 {
 public:
-	CRC_VCNL4200();
-	boolean begin(uint8_t a = VCNL4200_I2CADDR_DEFAULT);
-	uint8_t getLEDcurrent(void);
-	void setLEDcurrent(uint8_t c);
-	void setFrequency(VCNL4200_freq f);
-	uint16_t readProximity(void);
-	uint16_t readAmbient(void);
+	CRC_VCNL4200(); // existing
+	boolean begin(uint8_t a = VCNL4200_I2CADDR_DEFAULT); // existing
+	uint8_t getLEDcurrent(void); // existing
+	void setLEDcurrent(uint8_t c); // existing
+	void setFrequency(VCNL4200_freq f); // existing
+	uint16_t readProximity(void); // existing
+	uint16_t readAmbient(void); // existing
 
 private:
-	void write8(uint8_t address, uint8_t data);
-	uint16_t read16(uint8_t address);
-	uint8_t read8(uint8_t address);
-	uint8_t _i2caddr;
+	void write8(uint8_t address, uint8_t data); // existing
+	uint8_t write16_LowHigh(uint8_t address, uint8_t low, uint8_t high);
+	uint16_t readData(uint8_t command_code);
+	uint8_t _i2caddr; // existing
 };

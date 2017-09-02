@@ -5,7 +5,6 @@
 */
 
 #include <Wire.h>
-int reading = 0;
 #define SENSOR_ADDR 0x51  
 
 void setup() {
