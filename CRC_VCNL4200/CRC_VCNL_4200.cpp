@@ -19,39 +19,11 @@ boolean CRC_VCNL4200::begin() {
 	Wire.requestFrom(VCNL4200_I2CADDR, 2);
 	byte lowByte = Wire.read();
 	byte highByte = Wire.read();
-	Serial.print("Low: ");
-	Serial.println(lowByte);
-	Serial.print("High: ");
-	Serial.println(highByte);
-
-	//int reg = 0x8; //Proximity Sensor (PS) output
-	//Wire.beginTransmission(SENSOR_ADDR);
-	//Wire.write(reg);
-	//Wire.endTransmission(false);
-	////Read data
-	//byte prox[2] = { 0, 0 };  //The sensor provides the output over 2 bytes.
-	//Wire.requestFrom(SENSOR_ADDR, 2);
-	//prox[0] = Wire.read();
-	//prox[1] = Wire.read();
-	//int value = int(prox[1]) * 256 + int(prox[0]); //Combines bytes
-	//Serial.print("Proximity: ");
-	//Serial.println(value);
-	
-	
-	//read8(VCNL4200_PRODUCTID);
-	//uint16_t rev = read16(VCNL4200_PRODUCTID);
-	//Serial.print("ProductID: ");
-	//Serial.println(rev, HEX);
-	//Serial.println(rev);
-	if ((rev & 0xF0) != 0x20) {
-		return false;
+	//Strange that highByte returns 0x10 while documentation says it should return 0x01
+	if ((lowByte == 0x58) && (highByte == 0x10)) {
+		return true;
 	}
-
-	/*setLEDcurrent(20);
-	setFrequency(VCNL4200_390K625);
-
-	write8(VCNL4200_INTCONTROL, 0x08);*/
-	return true;
+	return false;
 }
 
 //void CRC_VCNL4200::setLEDcurrent(uint8_t c) {

@@ -10,7 +10,6 @@
 
 CRC_VCNL4200 vcnl4200;
 
-
 void setup() {
 	Serial.begin(9600);
 	while (!Serial);
@@ -82,5 +81,38 @@ void loop() {
 //	Wire.endTransmission();
 //}
 
+//unsigned int readProximity() {
+//	// readProximity() returns a 16-bit value from the VCNL4000's proximity data registers
+//	byte temp = readVCNLByte(0x80);
+//	writeVCNLByte(0x80, temp | 0x08); // command the sensor to perform a proximity measure
+//
+//	while (!(readVCNLByte(0x80) & 0x20)); // Wait for the proximity data ready bit to be set
+//	unsigned int data = readVCNLByte(0x87) << 8; data |= readVCNLByte(0x88); return data;
+//} 
+//unsigned int readAmbient() { 
+//	// readAmbient() returns a 16-bit value from the VCNL4000's ambient light data registers 
+//	byte temp = readVCNLByte(0x80); 
+//	writeVCNLByte(0x80, temp | 0x10); // command the sensor to perform ambient measure 
+//	while(!(readVCNLByte(0x80)&0x40)); // wait for the proximity data ready bit to be set 
+//	unsigned int data = readVCNLByte(0x85) << 8; data |= readVCNLByte(0x86); 
+//	return data; 
+//} 
+//void writeVCNLByte(byte address, byte data){ 
+//	// writeVCNLByte(address, data) writes a single byte of data to address 
+//	Wire.beginTransmission(VCNL4000_ADDRESS); 
+//	Wire.write(address); 
+//	Wire.write(data); 
+//	Wire.endTransmission(); 
+//} 
+//byte readVCNLByte(byte address){ 
+//	// readByte(address) reads a single byte of data from address 
+//	Wire.beginTransmission(VCNL4000_ADDRESS); 
+//	Wire.write(address); 
+//	Wire.endTransmission(); 
+//	Wire.requestFrom(VCNL4000_ADDRESS, 1); 
+//	while(!Wire.available()); 
+//	byte data = Wire.read(); 
+//	return data; 
+//}
 
 

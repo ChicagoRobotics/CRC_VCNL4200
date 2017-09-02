@@ -11,8 +11,6 @@
 #endif
 
 #define VCNL4200_I2CADDR 0x51
-
-// commands and constants
 #define VCNL4200_DeviceID 0x0E
 
 typedef enum
