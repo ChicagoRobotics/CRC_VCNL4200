@@ -7,16 +7,17 @@
 #include <Wire.h>
 #include "CRC_VCNL_4200.h"
 
-CRC_VCNL4200::CRC_VCNL4200() { }
+CRC_VCNL4200::CRC_VCNL4200() { 
+	_i2caddr = VCNL4200_I2CADDR;
+}
 
-
-boolean CRC_VCNL4200::begin() {
+boolean CRC_VCNL4200::find() {
 	Wire.begin();
 	uint8_t rev = 0;
-	Wire.beginTransmission(VCNL4200_I2CADDR);
+	Wire.beginTransmission(_i2caddr);
 	Wire.write(VCNL4200_DeviceID);
 	Wire.endTransmission(false);
-	Wire.requestFrom(VCNL4200_I2CADDR, 2);
+	Wire.requestFrom(_i2caddr, uint8_t(2));
 	byte lowByte = Wire.read();
 	byte highByte = Wire.read();
 	//Strange that highByte returns 0x10 while documentation says it should return 0x01
@@ -24,6 +25,75 @@ boolean CRC_VCNL4200::begin() {
 		return true;
 	}
 	return false;
+}
+
+boolean CRC_VCNL4200::initialize() {
+	write16_LowHigh(0x0, B01000000, B00000000);
+	write16_LowHigh(0x3, B00011010, B00001000);
+	write16_LowHigh(0x4, B01110000, B00000111);
+	write16_LowHigh(0x6, B00010000, B00000000);
+	return true;
+}
+
+uint16_t CRC_VCNL4200::getProximity() {
+	return readData(VCNL4200_PROXIMITY);
+}
+
+uint16_t CRC_VCNL4200::getAmbient() {
+	return readData(VCNL4200_AMBIENT);
+}
+
+uint16_t CRC_VCNL4200::readData(uint8_t command_code)
+{
+	uint16_t data;
+
+	Wire.beginTransmission(_i2caddr);
+	Wire.write(command_code);
+	Wire.endTransmission(false);
+	Wire.requestFrom(_i2caddr, uint8_t(2));
+	byte prox[2] = { 0, 0 };  //The sensor provides the output over 2 bytes.
+	prox[0] = Wire.read();
+	prox[1] = Wire.read();
+	data = int(prox[1]) * 256 + int(prox[0]); //Combines bytes
+
+	/*while (!Wire.available());
+	data = Wire.read();
+	data <<= 8;
+	while (!Wire.available());
+	data |= Wire.read();*/
+
+
+	return data;
+
+	//int reg = 0x8; //Proximity Sensor (PS) output
+	//Wire.beginTransmission(SENSOR_ADDR);
+	//Wire.write(reg);
+	//Wire.endTransmission(false);
+	////Read data
+	//byte prox[2] = { 0, 0 };  //The sensor provides the output over 2 bytes.
+	//Wire.requestFrom(SENSOR_ADDR, 2);
+	//prox[0] = Wire.read();
+	//prox[1] = Wire.read();
+	//int value = int(prox[1]) * 256 + int(prox[0]); //Combines bytes
+	//Serial.print("Proximity: ");
+	//Serial.println(value);
+}
+
+void CRC_VCNL4200::write8(uint8_t address, uint8_t data) //Original
+{
+	Wire.beginTransmission(_i2caddr);
+	Wire.write(address);
+	Wire.write(data);
+	Wire.endTransmission();
+}
+
+uint8_t CRC_VCNL4200::write16_LowHigh(uint8_t address, uint8_t low, uint8_t high)
+{
+	Wire.beginTransmission(_i2caddr);
+	Wire.write(address);
+	Wire.write(low);
+	Wire.write(high);
+	Wire.endTransmission();
 }
 
 //void CRC_VCNL4200::setLEDcurrent(uint8_t c) {
@@ -76,50 +146,3 @@ boolean CRC_VCNL4200::begin() {
 //		delay(1);
 //	}
 //}
-
-uint16_t CRC_VCNL4200::readData(uint8_t command_code)
-{
-	uint16_t data;
-
-	Wire.beginTransmission(_i2caddr);
-	Wire.write(command_code);
-	Wire.endTransmission(false);
-	Wire.requestFrom(_i2caddr, (uint8_t)2);
-	while (!Wire.available());
-	data = Wire.read();
-	data <<= 8;
-	while (!Wire.available());
-	data |= Wire.read();
-	return data;
-
-	//int reg = 0x8; //Proximity Sensor (PS) output
-	//Wire.beginTransmission(SENSOR_ADDR);
-	//Wire.write(reg);
-	//Wire.endTransmission(false);
-	////Read data
-	//byte prox[2] = { 0, 0 };  //The sensor provides the output over 2 bytes.
-	//Wire.requestFrom(SENSOR_ADDR, 2);
-	//prox[0] = Wire.read();
-	//prox[1] = Wire.read();
-	//int value = int(prox[1]) * 256 + int(prox[0]); //Combines bytes
-	//Serial.print("Proximity: ");
-	//Serial.println(value);
-}
-
-// write 1 byte
-void CRC_VCNL4200::write8(uint8_t address, uint8_t data) //Original
-{
-	Wire.beginTransmission(_i2caddr);
-	Wire.write(address);
-	Wire.write(data);
-	Wire.endTransmission();
-}
-
-uint8_t CRC_VCNL4200::write16_LowHigh(uint8_t address, uint8_t low, uint8_t high)
-{
-	Wire.beginTransmission(_i2caddr);
-	Wire.write(address);
-	Wire.write(low);
-	Wire.write(high);
-	Wire.endTransmission();
-}
