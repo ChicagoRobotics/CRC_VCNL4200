@@ -4,21 +4,29 @@
  Author:	jlaing
 */
 
-int ledPin = 13;
-int sdaPin = 20;
+#include <Wire.h>
+#include "CRC_VCNL_4200.h"
 
-// the setup function runs once when you press reset or power the board
+CRC_VCNL4200 vcnl4200;
+
 void setup() {
-	pinMode(ledPin, OUTPUT);
-	pinMode(sdaPin, OUTPUT);
+	Serial.begin(9600);
+	while (!Serial);
+	Serial.println("Booting test.");
+	if (vcnl4200.find()) {
+		Serial.println("VCNL4200 found");
+		vcnl4200.initialize();
+		Serial.println("VCNL4200 initialized");
+	}
 }
 
-// the loop function runs over and over again until power down or reset
 void loop() {
-	digitalWrite(ledPin, HIGH);   // sets the LED on
-	digitalWrite(sdaPin, HIGH);
-	delay(2000);                  // waits for a second
-	digitalWrite(ledPin, LOW);    // sets the LED off
-	digitalWrite(sdaPin, LOW);
+	Serial.print("Proximity: ");
+	Serial.println(vcnl4200.getProximity());
+	Serial.print("Ambient: ");
+	Serial.println(vcnl4200.getAmbient());
+	Serial.println();
 	delay(2000);
 }
+
+
