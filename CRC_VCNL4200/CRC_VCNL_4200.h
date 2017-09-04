@@ -28,7 +28,7 @@ typedef enum
 class CRC_VCNL4200 {
 public:
 	CRC_VCNL4200();
-	boolean find();
+	boolean exists();
 	boolean initialize();
 	uint16_t getProximity();
 	uint16_t getAmbient();

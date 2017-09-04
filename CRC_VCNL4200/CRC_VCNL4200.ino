@@ -13,7 +13,7 @@ void setup() {
 	Serial.begin(9600);
 	while (!Serial);
 	Serial.println("Booting.");
-	if (vcnl4200.find()) {
+	if (vcnl4200.exists()) {
 		Serial.println("VCNL4200 found");
 		vcnl4200.initialize();
 		Serial.println("VCNL4200 initialized");

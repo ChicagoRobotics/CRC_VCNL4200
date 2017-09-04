@@ -11,7 +11,7 @@ CRC_VCNL4200::CRC_VCNL4200() {
 	_i2caddr = VCNL4200_I2CADDR;
 }
 
-boolean CRC_VCNL4200::find() {
+boolean CRC_VCNL4200::exists() {
 	Wire.begin();
 	uint8_t rev = 0;
 	Wire.beginTransmission(_i2caddr);
