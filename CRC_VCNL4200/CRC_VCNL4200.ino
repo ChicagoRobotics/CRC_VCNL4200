@@ -18,12 +18,6 @@ void setup() {
 		vcnl4200.initialize();
 		Serial.println("VCNL4200 initialized");
 	}
-	unsigned int foo = B11111111;
-	Serial.print("test foo:");
-	Serial.println(foo);
-	foo = foo << 8;
-	Serial.print("foo shifted:");
-	Serial.println(foo);
 }
 
 void loop() {
