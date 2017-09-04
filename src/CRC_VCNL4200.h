@@ -1,6 +1,6 @@
-// CRC_VCNL_4200.h
+// CRC_VCNL4200.h
 
-#ifndef _CRC_VCNL_4200_h
+#ifndef _CRC_VCNL4200_h
 	#define _CRC_VCNL_4200_h
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"

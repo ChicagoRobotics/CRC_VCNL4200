@@ -5,7 +5,7 @@
 #endif
 
 #include <Wire.h>
-#include "CRC_VCNL_4200.h"
+#include "CRC_VCNL4200.h"
 
 CRC_VCNL4200::CRC_VCNL4200() { 
 	_i2caddr = VCNL4200_I2CADDR;
