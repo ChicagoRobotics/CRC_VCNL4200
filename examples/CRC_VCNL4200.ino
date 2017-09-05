@@ -4,10 +4,9 @@
  Author:	jlaing
 */
 
-#include <Wire.h>
-#include "CRC_VCNL_4200.h"
-
+#include "CRC_VCNL4200.h"
 CRC_VCNL4200 vcnl4200;
+int pinReading = 0;
 
 void setup() {
 	Serial.begin(9600);
@@ -18,15 +17,35 @@ void setup() {
 		vcnl4200.initialize();
 		Serial.println("VCNL4200 initialized");
 	}
+	pinMode(7, INPUT);
+	pinMode(13, OUTPUT);
 }
 
 void loop() {
+	
 	Serial.print("Proximity: ");
 	Serial.println(vcnl4200.getProximity());
 	Serial.print("Ambient: ");
 	Serial.println(vcnl4200.getAmbient());
+
+	//Check interrupt pin
+	pinReading = digitalRead(7);
+	//Set LED to interrupt pin HIGH/LOW
+	Serial.print("High interrupt: ");
+	Serial.println(vcnl4200.getProxHighInterrupt());
+	Serial.print("Low interrupt: ");
+	Serial.println(vcnl4200.getProxLowInterrupt());
+
+	if (pinReading == HIGH) {
+		Serial.println("Interrupt false");
+		digitalWrite(13, LOW);
+	}
+	else {
+		Serial.println("Interrupt true, flag:");
+		Serial.print(vcnl4200.getInterruptFlag());
+		digitalWrite(13, HIGH);
+	}
+
 	Serial.println();
 	delay(2000);
 }
-
-

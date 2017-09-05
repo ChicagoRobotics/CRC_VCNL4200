@@ -15,7 +15,7 @@ boolean CRC_VCNL4200::exists() {
 	Wire.begin();
 	uint8_t rev = 0;
 	Wire.beginTransmission(_i2caddr);
-	Wire.write(VCNL4200_DeviceID);
+	Wire.write(VCNL4200_DeviceID_REG);
 	Wire.endTransmission(false);
 	Wire.requestFrom(_i2caddr, uint8_t(2));
 	byte lowByte = Wire.read();
@@ -28,19 +28,56 @@ boolean CRC_VCNL4200::exists() {
 }
 
 boolean CRC_VCNL4200::initialize() {
-	write16_LowHigh(0x0, B01000000, B00000000);
-	write16_LowHigh(0x3, B00011010, B00001000);
-	write16_LowHigh(0x4, B01110000, B00000111);
-	write16_LowHigh(0x6, B00010000, B00000000);
+	set_ALS_CONF();
+	set_PS_CONF1_CONF2();
+	set_PS_CONF3_MS();
+
+	//Set the PS interrupt levels
+	write16_LowHigh(VCNL4200_PS_THDL_REG, B10001000, B00010011);
+	write16_LowHigh(VCNL4200_PS_THDH_REG, B11100000, B00101110);
+
+	return true;
+}
+
+boolean CRC_VCNL4200::set_ALS_CONF(uint8_t settingTotal) {
+	write16_LowHigh(VCNL4200_ALS_CONF_REG, settingTotal, B00000000);
+	return true;
+}
+
+boolean CRC_VCNL4200::set_PS_CONF1_CONF2(uint8_t conf1, uint8_t conf2) {
+	write16_LowHigh(VCNL4200_PS_CONF1_CONF2_REG, conf1, conf2);
+	return true;
+}
+
+boolean CRC_VCNL4200::set_PS_CONF3_MS(uint8_t conf3, uint8_t ms) {
+	Serial.print("Conf3, MS:");
+	Serial.print(conf3);
+	Serial.print(", ");
+	Serial.println(ms);
+	write16_LowHigh(VCNL4200_PS_CONF3_MS_REG, conf3, ms);
 	return true;
 }
 
 uint16_t CRC_VCNL4200::getProximity() {
-	return readData(VCNL4200_PROXIMITY);
+	return readData(VCNL4200_PROXIMITY_REG);
+}
+
+uint16_t CRC_VCNL4200::getProxLowInterrupt() {
+	return readData(VCNL4200_PS_THDL_REG);
+}
+
+uint16_t CRC_VCNL4200::getProxHighInterrupt() {
+	return readData(VCNL4200_PS_THDH_REG);
+}
+
+uint8_t CRC_VCNL4200::getInterruptFlag() {
+	uint8_t reading;
+	reading = readData(VCNL4200_INT_FLAG_REG);
+	return reading;
 }
 
 uint16_t CRC_VCNL4200::getAmbient() {
-	return readData(VCNL4200_AMBIENT);
+	return readData(VCNL4200_AMBIENT_REG);
 }
 
 uint16_t CRC_VCNL4200::readData(uint8_t command_code)
