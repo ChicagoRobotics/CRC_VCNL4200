@@ -83,6 +83,6 @@ public:
 private:
 	uint8_t _i2caddr;
 	void write8(uint8_t address, uint8_t data);
-	uint8_t write16_LowHigh(uint8_t address, uint8_t low, uint8_t high);
+	void write16_LowHigh(uint8_t address, uint8_t low, uint8_t high);
 	uint16_t readData(uint8_t command_code);
 };
