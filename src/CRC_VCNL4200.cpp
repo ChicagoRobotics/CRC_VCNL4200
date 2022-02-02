@@ -103,7 +103,7 @@ void CRC_VCNL4200::write8(uint8_t address, uint8_t data) //Original
 	Wire.endTransmission();
 }
 
-uint8_t CRC_VCNL4200::write16_LowHigh(uint8_t address, uint8_t low, uint8_t high)
+void CRC_VCNL4200::write16_LowHigh(uint8_t address, uint8_t low, uint8_t high)
 {
 	Wire.beginTransmission(_i2caddr);
 	Wire.write(address);
